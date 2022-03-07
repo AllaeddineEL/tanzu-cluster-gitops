@@ -1,0 +1,23 @@
+apiVersion: run.tanzu.vmware.com/v1alpha2
+kind: TanzuKubernetesCluster
+metadata:
+  name: gitops-cluster-01
+  namespace: dev
+spec:
+  distribution:
+    version: v1.21
+  settings:
+    storage:
+      classes:
+      - tanzu
+      defaultClass: tanzu
+  topology:
+    controlPlane:
+      replicas: 1
+      storageClass: tanzu
+      vmClass: best-effort-small
+    nodePools:
+    - name: workers
+      replicas: 1
+      storageClass: tanzu
+      vmClass: best-effort-small
