@@ -18,6 +18,6 @@ spec:
       vmClass: best-effort-small
     nodePools:
     - name: workers
-      replicas: 1
+      replicas: 2
       storageClass: tanzu
       vmClass: best-effort-small
