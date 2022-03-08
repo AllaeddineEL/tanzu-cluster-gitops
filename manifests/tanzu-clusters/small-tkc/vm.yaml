@@ -1,0 +1,40 @@
+apiVersion: vmoperator.vmware.com/v1alpha1
+kind: VirtualMachine
+metadata:
+  name: basic-centos
+  labels:
+    app: basic-centos
+spec:
+  networkInterfaces:
+    - networkName: "workload-1"
+      networkType: vsphere-distributed
+  className: best-effort-small
+  imageName: centos-stream-8-vmservice-v1alpha1-1619529007339
+  powerState: poweredOn
+  storageClass: tanzu
+  vmMetadata:
+    configMapName: centos-basic
+    transport: OvfEnv
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: centos-basic
+data:
+  hostname: centos-basic
+  #password: VMware1!
+  public-keys: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/Oze1viwl25VbRwvp6km5kiteWWw/Z+s3qAXPmyXe7Xezwphf7+nDVmwtQJHLXuMy0nr92XEvoh8aDOaSC1icwmjJKUxg1hk4RnTuA+3U/4RUTLuweVOqep4qykiZ0s0GjOmZqQswWB67CpsaugfzqkiQd2fNx25DQb+gac0Gl5lMt6Kyfj1kTaOM/MXuB9UyZH8QHH1bDi3NXi9xUexgqSxqLwRtTipslpnPgYjc6kNJqYdYj50XRJH0OhwglhrC1yhJNRXAZknXzq3h/XzgV26bzC58gDXAo5s4/Kpdrxy0owBSaEQFrHyKhZImT2MA9SgzSDrGdszUarMdbywzgXktaTL1evO26zqRLePM7NtWin1fCzzicNORYaprmvb7tvS1yqR52maXfnCc/leQfi/NboQqVGwTA6xM7DPijhYPGNTot1f8nfiw97VPH1GM5uHlEldUuGKRT3W1pQv9bHI4pw8Q8/23WTrlEq/NpbjOb6DBghnmHVHt9CUvsZBR9VMFpRBgVYdUau5UdwRDeZqeseGMRVGILD6vjPwlsu3j9eGcZHDRjL5ZE+ZjGuas5pfLhV1q0pVOeP3YWooEmnwZ0YGjDfGv2Q8jTn6hiqnA40dHUER3Z6MyBQQ6xGPq6PDLKAwTQI8eBcRyH96HqzXTDqFERcvPw6c5ewhsVQ== “aelareed@vmware.com”
+---
+apiVersion: vmoperator.vmware.com/v1alpha1
+kind: VirtualMachineService
+metadata:
+  name: basic-vm-lb
+spec:
+  selector:
+    app: basic-centos
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 22
+      protocol: TCP
+      targetPort: 22
