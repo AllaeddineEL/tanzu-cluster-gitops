@@ -1,7 +1,7 @@
 apiVersion: run.tanzu.vmware.com/v1alpha2
 kind: TanzuKubernetesCluster
 metadata:
-  name: gitops-cluster-01
+  name: gitops-cluster-02
   namespace: dev
 spec:
   distribution:
